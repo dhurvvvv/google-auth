@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Google Auth Panel - Supabase</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Supabase JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+
+    <!-- Background -->
+    <div class="background">
+        <div class="background-circle circle-one"></div>
+        <div class="background-circle circle-two"></div>
+        <div class="background-circle circle-three"></div>
+    </div>
+
+    <main class="app">
+
+        <!-- ================= AUTH PAGE ================= -->
+        <section id="auth-section" class="auth-section">
+
+            <div class="auth-card">
+
+                <div class="logo-box">
+                    <div class="google-logo">
+                        G
+                    </div>
+                </div>
+
+                <h1>Welcome Back</h1>
+
+                <p class="subtitle">
+                    Sign in to continue to your account
+                </p>
+
+                <!-- Setup Warning -->
+                <div id="setup-warning" class="setup-warning">
+                    <strong>Setup Required</strong>
+                    <span>
+                        Add your Supabase URL and publishable/anon key
+                        inside <code>script.js</code>.
+                    </span>
+                </div>
+
+                <!-- Google Login -->
+                <button id="google-login-btn" class="google-login-btn">
+                    <span class="google-icon">G</span>
+                    <span>Continue with Google</span>
+                </button>
+
+                <div class="divider">
+                    <span>OR</span>
+                </div>
+
+                <!-- Auth Mode -->
+                <div class="auth-mode">
+                    <button id="login-mode-btn" class="mode-btn active">
+                        Login
+                    </button>
+
+                    <button id="signup-mode-btn" class="mode-btn">
+                        Sign Up
+                    </button>
+                </div>
+
+                <!-- Email -->
+                <form id="auth-form">
+
+                    <div id="name-group" class="form-group hidden">
+                        <label for="name">
+                            Full Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="name"
+                            placeholder="Enter your full name"
+                            autocomplete="name"
+                        >
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="email">
+                            Email Address
+                        </label>
+
+                        <input
+                            type="email"
+                            id="email"
+                            placeholder="you@example.com"
+                            autocomplete="email"
+                            required
+                        >
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="password">
+                            Password
+                        </label>
+
+                        <div class="password-wrapper">
+
+                            <input
+                                type="password"
+                                id="password"
+                                placeholder="Enter your password"
+                                autocomplete="current-password"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                id="toggle-password"
+                                class="password-toggle"
+                            >
+                                Show
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    <div
+                        id="confirm-password-group"
+                        class="form-group hidden"
+                    >
+
+                        <label for="confirm-password">
+                            Confirm Password
+                        </label>
+
+                        <input
+                            type="password"
+                            id="confirm-password"
+                            placeholder="Confirm your password"
+                            autocomplete="new-password"
+                        >
+
+                    </div>
+
+                    <div
+                        id="forgot-password-box"
+                        class="forgot-password-box"
+                    >
+
+                        <button
+                            type="button"
+                            id="forgot-password-btn"
+                            class="forgot-password-btn"
+                        >
+                            Forgot Password?
+                        </button>
+
+                    </div>
+
+                    <button
+                        type="submit"
+                        id="auth-submit-btn"
+                        class="auth-submit-btn"
+                    >
+                        Login
+                    </button>
+
+                </form>
+
+                <!-- Message -->
+                <div
+                    id="auth-message"
+                    class="auth-message"
+                    role="alert"
+                ></div>
+
+                <div class="provider-info">
+
+                    <span class="provider-chip" id="provider-chip">
+                        Supabase Auth
+                    </span>
+
+                    <span>
+                        Secure authentication powered by Supabase
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= DASHBOARD ================= -->
+
+        <section
+            id="dashboard-section"
+            class="dashboard-section hidden"
+        >
+
+            <div class="dashboard-card">
+
+                <div class="dashboard-header">
+
+                    <div>
+                        <span class="small-label">
+                            ACCOUNT
+                        </span>
+
+                        <h1>
+                            Welcome,
+                            <span id="dashboard-name">
+                                User
+                            </span>
+                        </h1>
+
+                        <p>
+                            You are successfully authenticated.
+                        </p>
+                    </div>
+
+                    <button
+                        id="logout-btn"
+                        class="logout-btn"
+                    >
+                        Logout
+                    </button>
+
+                </div>
+
+
+                <div class="profile-section">
+
+                    <div class="profile-avatar-wrapper">
+
+                        <img
+                            id="profile-avatar"
+                            class="profile-avatar"
+                            src=""
+                            alt="Profile"
+                        >
+
+                        <div
+                            id="profile-avatar-fallback"
+                            class="profile-avatar-fallback"
+                        >
+                            U
+                        </div>
+
+                    </div>
+
+                    <div class="profile-main">
+
+                        <h2 id="profile-name">
+                            User
+                        </h2>
+
+                        <p id="profile-email">
+                            user@example.com
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="account-grid">
+
+                    <div class="info-card">
+
+                        <span class="info-label">
+                            FULL NAME
+                        </span>
+
+                        <strong id="info-name">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div class="info-card">
+
+                        <span class="info-label">
+                            EMAIL
+                        </span>
+
+                        <strong id="info-email">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div class="info-card">
+
+                        <span class="info-label">
+                            PROVIDER
+                        </span>
+
+                        <strong id="info-provider">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div class="info-card">
+
+                        <span class="info-label">
+                            EMAIL STATUS
+                        </span>
+
+                        <strong id="info-email-status">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div class="info-card">
+
+                        <span class="info-label">
+                            USER ID
+                        </span>
+
+                        <strong
+                            id="info-user-id"
+                            class="user-id"
+                        >
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div class="info-card">
+
+                        <span class="info-label">
+                            CREATED
+                        </span>
+
+                        <strong id="info-created">
+                            —
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="dashboard-footer">
+
+                    <div class="status-dot"></div>
+
+                    <span>
+                        Authentication session is active
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- ================= LOADING ================= -->
+
+    <div
+        id="loading-overlay"
+        class="loading-overlay hidden"
+    >
+
+        <div class="loader-box">
+
+            <div class="loader"></div>
+
+            <p id="loading-text">
+                Please wait...
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= TOAST ================= -->
+
+    <div
+        id="toast"
+        class="toast"
+    >
+        <span id="toast-message"></span>
+    </div>
+
+
+    <!-- Main JavaScript -->
+    <script src="script.js"></script>
+
+</body>
+</html>
